@@ -5,11 +5,10 @@ class busService {
   Api api = Api();
 
   Future getBus(
-      BuildContext context, String destination, String direction, String route) async {
+      BuildContext context, String destination, String pickupPoint) async {
     Map<String, dynamic> data = {
       'destination': destination.toString(),
-      'direction': direction.toString(),
-      'route': route.toString(),
+      'pickupPoint': pickupPoint.toString(),
     };
     final response = await api.post(context, 'bus/get.php', data);
     return response;

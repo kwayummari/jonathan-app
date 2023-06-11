@@ -6,24 +6,24 @@ import 'package:daladala_smart/src/widgets/app_button.dart';
 import 'package:daladala_smart/src/widgets/app_text.dart';
 import 'package:daladala_smart/src/widgets/app_typeAheadFormFIeld.dart';
 import 'package:flutter/material.dart';
+
 class navigation extends StatefulWidget {
   const navigation({super.key});
   @override
   State<navigation> createState() => _navigationState();
 }
+
 class _navigationState extends State<navigation> {
   @override
   void initState() {
     super.initState();
     getDestination();
   }
+
   var destination;
   List destinations = [];
   List directions = [];
-  var direction;
-  var direction_id;
-  var route;
-  List routes = [];
+  var pickupPoint;
   Future<void> getDestination() async {
     final navigationService _navigationService = await navigationService();
     final List destinationsList =
@@ -32,17 +32,9 @@ class _navigationState extends State<navigation> {
       this.destinations = destinationsList;
     });
   }
-  Future<void> getroutes() async {
-    final navigationService _navigationService = await navigationService();
-    final List routesList =
-        await _navigationService.getroutes(context, destination.toString());
-    setState(() {
-      this.routes = routesList;
-    });
-  }
+
   TextEditingController destin = TextEditingController();
-  TextEditingController dire = TextEditingController();
-  TextEditingController routing = TextEditingController();
+  TextEditingController pickup = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return AppBaseScreen(
@@ -111,52 +103,21 @@ class _navigationState extends State<navigation> {
 
                   destination = suggestion['id'];
                 });
-                getroutes();
               },
             ),
             TypeAheadFormFieldWidget(
-              controller: dire,
-              hintText: 'Direction',
+              controller: pickup,
+              hintText: 'Pickup Point',
               hintStyle: TextStyle(color: AppConst.white, fontSize: 15),
               enabledBorder: InputBorder.none,
               errorBorder: InputBorder.none,
               suggestionsCallback: (String pattern) async {
-                List<dynamic> filteredDirections = directions
-                    .where((direction) => direction['name']
+                List<dynamic> filteredDestinations = destinations
+                    .where((destination) => destination['name']
                         .toLowerCase()
                         .contains(pattern.toLowerCase()))
                     .toList();
-                return Future.value(filteredDirections);
-              },
-              itemBuilder: (BuildContext context, dynamic suggestion) {
-                return ListTile(
-                  title: AppText(
-                    txt: "To ${suggestion['name']}",
-                    size: 15,
-                    color: AppConst.primary,
-                  ),
-                );
-              },
-              onSuggestionSelected: (dynamic suggestion) {
-                setState(() {
-                  dire.text = suggestion['name'];
-                  direction_id = suggestion['id'];
-                });
-              },
-            ),
-            TypeAheadFormFieldWidget(
-              controller: routing,
-              hintText: 'Route',
-              hintStyle: TextStyle(color: AppConst.white, fontSize: 15),
-              enabledBorder: InputBorder.none,
-              errorBorder: InputBorder.none,
-              suggestionsCallback: (String pattern) async {
-                List<dynamic> filteredRoutes = routes
-                    .where((routes) => routes['name']
-                        .toLowerCase()
-                        .contains(pattern.toLowerCase()))
-                    .toList();
-                return Future.value(filteredRoutes);
+                return Future.value(filteredDestinations);
               },
               itemBuilder: (BuildContext context, dynamic suggestion) {
                 return ListTile(
@@ -169,8 +130,10 @@ class _navigationState extends State<navigation> {
               },
               onSuggestionSelected: (dynamic suggestion) {
                 setState(() {
-                  routing.text = suggestion['name'];
-                  route = suggestion['id'];
+                  pickup.text = suggestion['name'];
+                  List<String> d = pickup.text.toString().split('-');
+                  pickupPoint = suggestion['id'];
+                  print(pickupPoint);
                 });
               },
             ),
@@ -183,8 +146,7 @@ class _navigationState extends State<navigation> {
                         RouteNames.searchBus,
                         arguments: {
                           'destination': destination.toString(),
-                          'dire': direction_id.toString(),
-                          'route': route.toString(),
+                          'pickupPoint': pickupPoint.toString(),
                         },
                       ),
                   label: 'Submit',

@@ -13,14 +13,12 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class buses extends StatefulWidget {
   var destination;
-  var dire;
-  var route;
+  var pickupPoint;
 
   buses({
     Key? key,
     required this.destination,
-    required this.dire,
-    required this.route,
+    required this.pickupPoint,
   }) : super(key: key);
 
   @override
@@ -39,7 +37,7 @@ class _busesState extends State<buses> {
   Future<List> getBuses() async {
     final busService _busesService = await busService();
     final List busesList = await _busesService.getBus(
-        context, widget.destination, widget.dire, widget.route);
+        context, widget.destination, widget.pickupPoint);
     return busesList;
   }
 
@@ -68,7 +66,8 @@ class _busesState extends State<buses> {
               Icons.home,
               color: AppConst.white,
             ),
-            onPressed: () => Navigator.pushNamed(context, RouteNames.bottomNavigationBar),
+            onPressed: () =>
+                Navigator.pushNamed(context, RouteNames.bottomNavigationBar),
           )
         ],
         backgroundColor: AppConst.primary,
@@ -79,7 +78,7 @@ class _busesState extends State<buses> {
         ),
       ),
       child: StreamBuilder(
-        stream: Stream.periodic(Duration(seconds: 60)).asyncMap((i) =>
+        stream: Stream.periodic(Duration(seconds: 120)).asyncMap((i) =>
             _futureBusList =
                 getBuses()), // i is null here (check periodic docs)
         builder: (context, snapshot) => FutureBuilder<List>(

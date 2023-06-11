@@ -1,6 +1,6 @@
-import 'package:daladala_smart/src/functions/rides.dart';
+import 'package:daladala_smart/src/functions/bus_rides.dart';
+import 'package:daladala_smart/src/service/booking-service.dart';
 import 'package:daladala_smart/src/service/ride-servirvice.dart';
-import 'package:daladala_smart/src/utils/animations/busesListShimmer.dart';
 import 'package:daladala_smart/src/utils/app_const.dart';
 import 'package:daladala_smart/src/widgets/app_base_screen.dart';
 import 'package:daladala_smart/src/widgets/app_button.dart';
@@ -28,7 +28,7 @@ class _myRidesState extends State<myRides> {
 
   Future<List> getRides() async {
     final RideService _ridesService = await RideService();
-    final List ridesList = await _ridesService.getRides(context);
+    final List ridesList = await _ridesService.getdriverRides(context);
     return ridesList;
   }
 
@@ -63,7 +63,7 @@ class _myRidesState extends State<myRides> {
                             radius: 20.0,
                             child: AppText(
                                 color: AppConst.black,
-                                txt: rides.bus_id.toString().substring(0, 1),
+                                txt: rides.user_id.toString().substring(0, 1),
                                 size: 15)),
                         title: AppText(
                           txt: rides.date.substring(0, 11),
@@ -77,15 +77,18 @@ class _myRidesState extends State<myRides> {
                           size: 12,
                         ),
                         trailing: AppButton(
-                            onPress: () => null,
+                            onPress: () {
+                              if (rides.status == '0') {
+                                bookingService()
+                                    .updatebookings(context, rides.id);
+                              } else {
+                                null;
+                              }
+                            },
                             label: rides.status == '0' ? 'Pending' : 'Accepted',
                             borderRadius: 10,
-                            textColor: rides.status != '0'
-                                ? AppConst.white
-                                : AppConst.black,
-                            bcolor: rides.status != '0'
-                                ? AppConst.primary
-                                : AppConst.gold),
+                            textColor: AppConst.white,
+                            bcolor: AppConst.primary),
                       ),
                     );
                   },

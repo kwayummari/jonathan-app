@@ -10,13 +10,11 @@ import 'package:geolocator/geolocator.dart';
 
 class searchBus extends StatefulWidget {
   var destination;
-  var dire;
-  var route;
+  var pickupPoint;
   searchBus({
     Key? key,
     required this.destination,
-    required this.dire,
-    required this.route,
+    required this.pickupPoint,
   }) : super(key: key);
 
   @override
@@ -44,8 +42,7 @@ class _searchBusState extends State<searchBus> {
         RouteNames.buses,
         arguments: {
           'destination': widget.destination.toString(),
-          'dire': widget.dire.toString(),
-          'route': widget.route.toString(),
+          'pickupPoint': widget.pickupPoint.toString(),
         },
       );
     });

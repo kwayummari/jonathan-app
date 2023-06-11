@@ -1,8 +1,6 @@
-import 'package:daladala_smart/src/functions/slide.dart';
 import 'package:daladala_smart/src/screens/introduction/slides.dart';
 import 'package:daladala_smart/src/utils/app_const.dart';
 import 'package:flutter/material.dart';
-import 'package:hexcolor/hexcolor.dart';
 import 'package:intro_slider/intro_slider.dart';
 
 class IntroScreen extends StatefulWidget {

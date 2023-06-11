@@ -28,9 +28,32 @@ class bookingService {
       'time': time.toString(),
       'payment_type': paymentType.toString(),
       'seats': seats.toString(),
+      'status': '0',
     };
     final response = await api.post(context, 'bookings/post_book.php', data);
     if (response == 'Successfully booked enjoy your trip') {
+      AppSnackbar(
+        isError: false,
+        response: response,
+      ).show(context);
+    } else {
+      AppSnackbar(
+        isError: true,
+        response: response,
+      ).show(context);
+    }
+    return response;
+  }
+
+  Future updatebookings(BuildContext context, String id) async {
+    final SplashFunction _splashFunction = await SplashFunction();
+    var user_id = await _splashFunction.getId();
+    Map<String, dynamic> data = {
+      'status': '1',
+      'id': id.toString(),
+    };
+    final response = await api.post(context, 'bookings/update_book.php', data);
+    if (response == 'Accepted trip') {
       AppSnackbar(
         isError: false,
         response: response,

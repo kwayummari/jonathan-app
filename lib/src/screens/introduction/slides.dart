@@ -39,7 +39,7 @@ class Slide extends StatelessWidget {
                 height: MediaQuery.of(context).size.height / 3,
               ),
               Image.asset(
-                'assets/icon.png',
+                'assets/logo1.png',
                 height: 150,
                 width: 150,
               ),

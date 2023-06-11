@@ -30,7 +30,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     final myProvider = Provider.of<MyProvider>(context);
     return AppBaseScreen(
-      isvisible: true,
+      isvisible: false,
       backgroundImage: false,
       backgroundAuth: false,
       child: Form(
@@ -87,11 +87,15 @@ class _LoginState extends State<Login> {
                   Icons.lock,
                   color: AppConst.black,
                 ),
-                suffixicon: IconButton(onPressed: () {
-                  setState(() {
-                    dont_show_password = !dont_show_password;
-                  });
-                }, icon: Icon(dont_show_password ? Icons.visibility_off : Icons.visibility)),
+                suffixicon: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        dont_show_password = !dont_show_password;
+                      });
+                    },
+                    icon: Icon(dont_show_password
+                        ? Icons.visibility_off
+                        : Icons.visibility)),
               ),
               Padding(
                 padding: const EdgeInsets.only(right: 20, top: 20),

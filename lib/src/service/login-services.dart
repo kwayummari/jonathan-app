@@ -26,8 +26,10 @@ class loginService {
       Provider.of<MyProvider>(context, listen: false)
           .updateLoging(!myProvider.myLoging);
       List<String> splitResponse = response.split("-");
-      String id = splitResponse[0]; // "1"
+      print(response);
+      String id = splitResponse[0];
       String role = splitResponse[1];
+      String bus_id = splitResponse[2];
       if (role == '0') {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setString('email', email);
@@ -35,6 +37,15 @@ class loginService {
         await prefs.setString('role', role.toString());
         Navigator.pushNamedAndRemoveUntil(
             context, RouteNames.bottomNavigationBar, (_) => false);
+      }
+      if (role == '1') {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('email', email);
+        await prefs.setString('id', id.toString());
+        await prefs.setString('role', role.toString());
+        await prefs.setString('bus_id', bus_id.toString());
+        Navigator.pushNamedAndRemoveUntil(
+            context, RouteNames.driverBottomNavigationBar, (_) => false);
       }
     } else {
       Provider.of<MyProvider>(context, listen: false)
